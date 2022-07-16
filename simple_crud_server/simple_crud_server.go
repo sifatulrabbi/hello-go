@@ -108,7 +108,7 @@ func removeMovie(res http.ResponseWriter, req *http.Request) {
 	json.NewEncoder(res).Encode(movies)
 }
 
-func main() {
+func simple_crud_server() {
 	randMovies()
 
 	router := mux.NewRouter()

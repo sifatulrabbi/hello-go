@@ -1,4 +1,4 @@
-package main
+package static_server
 
 import (
 	"fmt"
@@ -36,7 +36,7 @@ func formHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Address = %s", address)
 }
 
-func main() {
+func simple_static_server() {
 	fileServer := http.FileServer(http.Dir("./static"))
 	http.Handle("/", fileServer)
 	http.HandleFunc("/form", formHandler)
