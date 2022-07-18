@@ -1,4 +1,4 @@
-package main
+package simplecrudserver
 
 import (
 	// Built in packages
@@ -26,6 +26,25 @@ type Director struct {
 }
 
 var movies []Movie
+
+// Main function
+func SimpleCrudServer() {
+	randMovies()
+
+	router := mux.NewRouter()
+	// Routes and handlers
+	router.HandleFunc("/movies", getMovies).Methods("GET")
+	router.HandleFunc("/movies/{id}", getAMovie).Methods("GET")
+	router.HandleFunc("/movies", createMovie).Methods("POST")
+	router.HandleFunc("/movies/{id}", updateMovie).Methods("PUT")
+	router.HandleFunc("/movies/{id}", removeMovie).Methods("DELETE")
+
+	// Start the server and catch errors
+	fmt.Printf("Starting server at port 8000")
+	if err := http.ListenAndServe(":8000", router); err != nil {
+		log.Fatal("Unexpected error", err)
+	}
+}
 
 // Set random movies
 func randMovies() {
@@ -106,22 +125,4 @@ func removeMovie(res http.ResponseWriter, req *http.Request) {
 		}
 	}
 	json.NewEncoder(res).Encode(movies)
-}
-
-func simple_crud_server() {
-	randMovies()
-
-	router := mux.NewRouter()
-	// Routes and handlers
-	router.HandleFunc("/movies", getMovies).Methods("GET")
-	router.HandleFunc("/movies/{id}", getAMovie).Methods("GET")
-	router.HandleFunc("/movies", createMovie).Methods("POST")
-	router.HandleFunc("/movies/{id}", updateMovie).Methods("PUT")
-	router.HandleFunc("/movies/{id}", removeMovie).Methods("DELETE")
-
-	// Start the server and catch errors
-	fmt.Printf("Starting server at port 8000")
-	if err := http.ListenAndServe(":8000", router); err != nil {
-		log.Fatal("Unexpected error", err)
-	}
 }
