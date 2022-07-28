@@ -5,7 +5,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/sifatulrabbi/hello-go/simple-cli/services"
+	"github.com/sifatulrabbi/hello-go/pkg/simple-cli/services"
 )
 
 const INVALID_ERROR = "Invalid format. Please use 'help' or 'h' for helps.\n"

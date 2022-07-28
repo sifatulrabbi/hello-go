@@ -1,7 +1,8 @@
 package main
 
 import (
-	simplecli "github.com/sifatulrabbi/hello-go/simple-cli"
+	"github.com/sifatulrabbi/hello-go/pkg/lib"
+	// simplecli "github.com/sifatulrabbi/hello-go/pkg/simple-cli"
 	// "fmt"
 	// "log"
 	// "net/http"
@@ -10,9 +11,10 @@ import (
 )
 
 func main() {
-	simplecli.SimpleCLI()
+	// simplecli.SimpleCLI()
 	// go helloServer()
 	// simplecrudserver.SimpleCrudServer()
+	lib.GetID()
 }
 
 // func helloServer() {
