@@ -4,7 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
+	"strings"
 )
 
 type Users struct {
@@ -21,6 +23,68 @@ type User struct {
 type Social struct {
 	Facebook string `json:"facebook"`
 	Twitter  string `json:"twitter"`
+}
+
+type File struct {
+	Path string
+}
+
+func (f *File) GetContent() (c []byte, err error) {
+	// path :=
+	c, err = os.ReadFile(f.Path)
+	return
+}
+
+func (f *File) GetContentStr() (c string, err error) {
+	b, err := f.GetContent()
+	if err != nil {
+		return
+	}
+	c = string(b)
+	return
+}
+
+func (f *File) GetOSFile() (file *os.File, err error) {
+	file, err = os.OpenFile(f.Path, os.O_RDONLY, os.ModeAppend)
+	if err != nil {
+		file, err = os.OpenFile(f.Path, os.O_CREATE, os.ModeAppend)
+		return
+	}
+	return
+}
+
+func (f *File) WriteAndSave(content map[string]string) (err error) {
+	file, err := f.GetOSFile()
+	if err != nil {
+		return
+	}
+	b, err := json.Marshal(content)
+	if err != nil {
+		fmt.Println("Error while converting strings to bytes.", err)
+		return
+	}
+	_, err = file.Write(b)
+	if err != nil {
+		log.Fatalln("Error while writing to the file.", err)
+		return
+	}
+	return
+}
+
+func (f *File) CountFileLines() (count int, err error) {
+	str, err := f.GetContentStr()
+	if err != nil {
+		log.Fatalln("Unable to open the file.", err)
+		return
+	}
+	strArr := strings.Split(str, "")
+	for _, v := range strArr {
+		if v == "\n" {
+			count += 1
+		}
+	}
+	fmt.Printf("Lines count of the file '%v' is '%v'\n", f.Path, count)
+	return
 }
 
 func ReadJSON(p string) (users Users) {
@@ -43,7 +107,7 @@ func ReadJSON(p string) (users Users) {
 	return
 }
 
-func WriteJSON(p string) (b []byte) {
+func WriteJSON(path, data string) (b []byte) {
 	d := User{
 		Name: "Sifatul Rabbi",
 		Age:  21,
@@ -58,7 +122,7 @@ func WriteJSON(p string) (b []byte) {
 		fmt.Println(err)
 		return nil
 	}
-	f, err := os.Create(p)
+	f, err := os.Create(path)
 	if err != nil {
 		fmt.Println(err)
 		return nil
