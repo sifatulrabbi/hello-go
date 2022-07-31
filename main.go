@@ -5,5 +5,5 @@ import (
 )
 
 func main() {
-	lib.Channels()
+	lib.HTTPFiles()
 }
