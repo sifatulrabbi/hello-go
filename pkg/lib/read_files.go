@@ -30,7 +30,6 @@ type File struct {
 }
 
 func (f *File) GetContent() (c []byte, err error) {
-	// path :=
 	c, err = os.ReadFile(f.Path)
 	return
 }
